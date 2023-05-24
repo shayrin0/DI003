@@ -1,7 +1,25 @@
-public class MidsizeSedan implements Vehicle, Trackable {
+public class Ambulance implements EmergencyVehicle {
 
-    /* the @Override annotation indicates that the methods in our class (MidsizeSedan) were
-    defined in the interface (Vehicle) and this class is providing an implementation. */
+    @Override
+    public void flashersOn() {
+        // implementation code here...
+    }
+
+    @Override
+    public void flashersOff() {
+        // implementation code here...
+    }
+
+    @Override
+    public void sirenOn() {
+        // implementation code here...
+    }
+
+    @Override
+    public void sirenOff() {
+        // implementation code here...
+    }
+
     @Override
     public void moveForward(int milesPerHour) {
         // implementation code here...
@@ -34,21 +52,6 @@ public class MidsizeSedan implements Vehicle, Trackable {
 
     @Override
     public void engineOff() {
-        // implementation code here...
-    }
-
-    @Override
-    public void sendCurrentLocation() {
-        // implementation code here...
-    }
-
-    @Override
-    public void beaconOn() {
-        // implementation code here...
-    }
-
-    @Override
-    public void beaconOff() {
         // implementation code here...
     }
 }

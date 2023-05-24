@@ -17,7 +17,7 @@ public class NextPresenter {
         count[YULIET] = 1;
     }
 
-    public void presenterSelection () {
+    public void luckyPresenter () {
 
         updateList();
 
