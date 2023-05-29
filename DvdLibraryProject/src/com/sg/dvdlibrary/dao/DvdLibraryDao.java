@@ -10,15 +10,15 @@ import java.util.List;
  */
 public interface DvdLibraryDao {
 
-    DVD addDvd (String title, DVD dvd) throws DvdLibraryException;
+    DVD addDvd (String title, DVD dvd) throws DvdLibraryPersistenceException;
 
-    List<DVD> getAllDvds () throws DvdLibraryException;
+    List<DVD> getAllDvds () throws DvdLibraryPersistenceException;
 
-    DVD getDvd (String title) throws DvdLibraryException;
+    DVD getDvd (String title) throws DvdLibraryPersistenceException;
 
-    DVD removeDVD (String title) throws DvdLibraryException;
+    DVD removeDVD (String title) throws DvdLibraryPersistenceException;
 
-    Boolean searchDvd(String title) throws DvdLibraryException;
+    Boolean searchDvd(String title) throws DvdLibraryPersistenceException;
 
-    void editDvd(String newTitle, DVD dvd) throws DvdLibraryException;
+    void editDvd(String newTitle, DVD dvd) throws DvdLibraryPersistenceException;
 }

@@ -1,7 +1,7 @@
 package com.sg.dvdlibrary.controller;
 
 import com.sg.dvdlibrary.dao.DvdLibraryDao;
-import com.sg.dvdlibrary.dao.DvdLibraryException;
+import com.sg.dvdlibrary.dao.DvdLibraryPersistenceException;
 import com.sg.dvdlibrary.dto.DVD;
 import com.sg.dvdlibrary.ui.DvdLibraryView;
 import com.sg.dvdlibrary.ui.UserIO;
@@ -69,7 +69,7 @@ public class DvdLibraryController {
 
             }
             exitMessage();
-        } catch (DvdLibraryException e) {
+        } catch (DvdLibraryPersistenceException e) {
             view.displayErrorMessage(e.getMessage());
         }
     }
@@ -78,7 +78,7 @@ public class DvdLibraryController {
         return view.printMenuAndGetSelection();
     }
 
-    private void addDvd() throws DvdLibraryException {
+    private void addDvd() throws DvdLibraryPersistenceException {
         String title = view.getDvdTitle();
         if (!dao.searchDvd(title)) {
             view.displayAddDvdBanner();
@@ -91,13 +91,13 @@ public class DvdLibraryController {
         }
     }
 
-    private void listDvds() throws DvdLibraryException {
+    private void listDvds() throws DvdLibraryPersistenceException {
         view.displayDisplayAllBanner();
         List<DVD> studentList = dao.getAllDvds();
         view.displayDvdList(studentList);
     }
 
-    private void viewDvd() throws DvdLibraryException {
+    private void viewDvd() throws DvdLibraryPersistenceException {
         view.displayDisplayDvdBanner();
         String title = view.getDvdTitleChoice();
         if (dao.searchDvd(title)) {
@@ -109,7 +109,7 @@ public class DvdLibraryController {
         }
     }
 
-    private void removeDvd() throws DvdLibraryException {
+    private void removeDvd() throws DvdLibraryPersistenceException {
         view.displayRemoveDvdBanner();
         String title = view.getDvdTitleChoice();
         if (dao.searchDvd(title)) {
@@ -121,7 +121,7 @@ public class DvdLibraryController {
         }
     }
 
-    private void editDvd() throws DvdLibraryException {
+    private void editDvd() throws DvdLibraryPersistenceException {
         view.displayEditDvdBanner();
         String title = view.displayEditDvdChoice();
         if (dao.searchDvd(title)) {
@@ -136,7 +136,7 @@ public class DvdLibraryController {
         }
     }
 
-    public void searchDvd () throws DvdLibraryException {
+    public void searchDvd () throws DvdLibraryPersistenceException {
         String title = view.getDvdTitle();
 
         if (dao.searchDvd(title)) {
