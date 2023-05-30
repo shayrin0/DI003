@@ -1,5 +1,6 @@
 package com.sg.dvdlibrary.service;
 
+import com.sg.dvdlibrary.dao.DvdLibraryAuditDao;
 import com.sg.dvdlibrary.dao.DvdLibraryDao;
 import com.sg.dvdlibrary.dao.DvdLibraryPersistenceException;
 import com.sg.dvdlibrary.dto.DVD;
@@ -9,9 +10,11 @@ import java.util.List;
 public class DvdLibraryServiceLayerImp implements DvdLibraryServiceLayer {
 
     DvdLibraryDao dao;
+    private DvdLibraryAuditDao auditDao;
 
-    public DvdLibraryServiceLayerImp(DvdLibraryDao dao) {
+    public DvdLibraryServiceLayerImp(DvdLibraryDao dao, DvdLibraryAuditDao auditDao) {
         this.dao = dao;
+        this.auditDao = auditDao;
     }
 
     @Override
@@ -38,6 +41,9 @@ public class DvdLibraryServiceLayerImp implements DvdLibraryServiceLayer {
         // We passed all our business rules checks so go ahead
         // and persist the DVD object
         dao.addDvd(dvd.getTitle(), dvd);
+
+        auditDao.writeAuditEntry(
+                "DVD " + dvd.getTitle() + " CREATED.");
     }
 
     @Override
@@ -52,7 +58,33 @@ public class DvdLibraryServiceLayerImp implements DvdLibraryServiceLayer {
 
     @Override
     public DVD removeDVD(String title) throws DvdLibraryPersistenceException {
-        return dao.removeDVD(title);
+        DVD removedDvd = dao.removeDVD(title);
+        // Write to audit log
+        auditDao.writeAuditEntry("DVD " + title + " REMOVED.");
+        return removedDvd;
+    }
+
+    @Override
+    public Boolean searchDvd(String title) throws
+            DvdLibraryNoSuchTitleException,
+            DvdLibraryPersistenceException {
+        if (dao.getDvd(title) == null) {
+            editDvdCheck(title);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void editDvd(String oldTitle, DVD dvd) throws
+            DvdLibraryDataValidationException,
+            DvdLibraryPersistenceException {
+
+        validateDvd(dvd);
+        dao.removeDVD(oldTitle);
+        dao.editDvd(dvd.getTitle(), dvd);
+        auditDao.writeAuditEntry(
+                "DVD '" + dvd.getTitle() + "' EDITED.");
     }
 
     private void validateDvd (DVD dvd) throws DvdLibraryDataValidationException {
@@ -73,5 +105,10 @@ public class DvdLibraryServiceLayerImp implements DvdLibraryServiceLayer {
                     "ERROR: All fields [Title, Release Date, MPAA Rating, Director's Name," +
                             "Studio, User Rating] are required.");
         }
+    }
+
+    private void editDvdCheck (String title) throws DvdLibraryNoSuchTitleException {
+            throw new DvdLibraryNoSuchTitleException(
+                    "ERROR: DVD " + title + " doesn't exist in our collection!");
     }
 }

@@ -1,6 +1,7 @@
-The Godfather::1972::R::Francis Ford Coppola::Paramount Pictures::One of the best of all time.
+Schindler's List::1993::R::Steven Spielberg::Amblin Entertainment Universal Pictures::A three hour film that feels too short
 The Shawshank Redemption::1994::R::Frank Darabont::Castle Rock Entertainment::Some birds aren't meant to be caged.
 The Dark Knight::2008::PG-13::Christopher Nolan::Warner Bros. Pictures::MASTERPIECE!
 The Godfather Part II::1974::R::Francis Ford Coppola::Paramount Pictures::Breathtaking in its scope
 The Lord of the Rings: The Return of the King::2003::PG-13::Peter Jackson::New Line Cinema::The best trilogy in the history of cinema
+The Godfather Part I::1972::R::Francis Ford Coppola::Paramount Pictures::One of the best of all time.
 Catch Me If You Can::2002::PG-13::Steven Spielberg::Amblin Entertainment::Fun movie

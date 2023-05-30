@@ -17,4 +17,12 @@ public interface DvdLibraryServiceLayer {
     DVD getDvd (String title) throws DvdLibraryPersistenceException;
 
     DVD removeDVD (String title) throws DvdLibraryPersistenceException;
+
+    Boolean searchDvd(String title) throws
+            DvdLibraryNoSuchTitleException,
+            DvdLibraryPersistenceException;
+
+    void editDvd(String oldTitle, DVD dvd) throws
+            DvdLibraryDataValidationException,
+            DvdLibraryPersistenceException;
 }
