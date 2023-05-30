@@ -35,8 +35,8 @@ public class UserIOConsoleImp implements UserIO {
     public String readString(String msgPrompt) {
         System.out.println(msgPrompt);
         String str = console.nextLine();
-        if (str == null || str.equals(""))
-            return "null";
+//        if (str == null || str.equals(""))
+//            return "null";
         return str;
     }
 

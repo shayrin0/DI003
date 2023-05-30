@@ -15,7 +15,7 @@ public class DvdLibraryServiceLayerImp implements DvdLibraryServiceLayer {
     }
 
     @Override
-    public void createDvd(String title, DVD dvd) throws
+    public void createDvd(DVD dvd) throws
             DvdLibraryDuplicateTitleException,
             DvdLibraryDataValidationException,
             DvdLibraryPersistenceException {
@@ -25,9 +25,9 @@ public class DvdLibraryServiceLayerImp implements DvdLibraryServiceLayer {
         // throw a DvdLibraryDuplicateTitleException
         if (dao.getDvd(dvd.getTitle()) != null) {
             throw new DvdLibraryDuplicateTitleException(
-                    "ERROR: Could not add DVD.  DVD title "
+                    "ERROR: Could not add DVD.  DVD title '"
                             + dvd.getTitle()
-                            + " already exists");
+                            + "' already exists");
         }
 
         // Now validate all the fields on the given DVD object.
@@ -42,17 +42,17 @@ public class DvdLibraryServiceLayerImp implements DvdLibraryServiceLayer {
 
     @Override
     public List<DVD> getAllDvds() throws DvdLibraryPersistenceException {
-        return null;
+        return dao.getAllDvds();
     }
 
     @Override
     public DVD getDvd(String title) throws DvdLibraryPersistenceException {
-        return null;
+        return dao.getDvd(title);
     }
 
     @Override
     public DVD removeDVD(String title) throws DvdLibraryPersistenceException {
-        return null;
+        return dao.removeDVD(title);
     }
 
     private void validateDvd (DVD dvd) throws DvdLibraryDataValidationException {

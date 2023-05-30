@@ -28,7 +28,8 @@ public class DvdLibraryView {
         return io.readInt("Please select from the above choices.", 1, 7);
     }
 
-    public DVD getNewDvdInfo(String title) {
+    public DVD getNewDvdInfo() {
+        String title = io.readString("Please enter the title of the movie");
         String releaseDate = io.readString("Please enter the release date of the movie");
         String ratingMPAA = io.readString("Please enter the MPAA rating of the movie");
         String directorName = io.readString("Please enter the movie director's name");

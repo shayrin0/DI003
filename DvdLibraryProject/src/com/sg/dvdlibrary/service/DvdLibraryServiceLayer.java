@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface DvdLibraryServiceLayer {
 
-    void createDvd (String title, DVD dvd) throws
+    void createDvd (DVD dvd) throws
             DvdLibraryDuplicateTitleException,
             DvdLibraryDataValidationException,
             DvdLibraryPersistenceException;
