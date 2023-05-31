@@ -1,0 +1,7 @@
+2::Ments::1.20::8
+3::Peanut::0.80::9
+4::Candies::0.50::9
+5::Chocolate Bars::1.25::20
+6::Soda::1.00::20
+7::Water::0.70::19
+8::Coca Cola::1.10::20
