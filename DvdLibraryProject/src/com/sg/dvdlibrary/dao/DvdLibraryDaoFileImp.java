@@ -10,8 +10,16 @@ import java.util.*;
  */
 public class DvdLibraryDaoFileImp implements DvdLibraryDao {
 
-    public static final String DVD_FILE = "DvdLibrary.txt";
+    private final String DVD_FILE;
     public static final String DELIMITER = "::";
+
+    public DvdLibraryDaoFileImp() {
+        DVD_FILE = "DvdLibrary.txt";
+    }
+
+    public DvdLibraryDaoFileImp(String dvdTextFile) {
+        DVD_FILE = dvdTextFile;
+    }
 
     private Map<String, DVD> dvds = new HashMap<>();
     @Override

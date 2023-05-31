@@ -1,5 +1,7 @@
 package com.sg.dvdlibrary.dto;
 
+import java.util.Objects;
+
 /**
  * This is the DTO that holds all the DVD's info
  */
@@ -63,5 +65,35 @@ public class DVD {
 
     public void setUserRating(String userRating) {
         this.userRating = userRating;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DVD dvd = (DVD) o;
+        return Objects.equals(title, dvd.title)
+                && Objects.equals(releaseDate, dvd.releaseDate)
+                && Objects.equals(ratingMPAA, dvd.ratingMPAA)
+                && Objects.equals(directorName, dvd.directorName)
+                && Objects.equals(studio, dvd.studio)
+                && Objects.equals(userRating, dvd.userRating);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, releaseDate, ratingMPAA, directorName, studio, userRating);
+    }
+
+    @Override
+    public String toString() {
+        return "DVD{" +
+                "title='" + title + '\'' +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", ratingMPAA='" + ratingMPAA + '\'' +
+                ", directorName='" + directorName + '\'' +
+                ", studio='" + studio + '\'' +
+                ", userRating='" + userRating + '\'' +
+                '}';
     }
 }

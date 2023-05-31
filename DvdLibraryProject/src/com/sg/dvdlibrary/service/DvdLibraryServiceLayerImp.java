@@ -1,8 +1,6 @@
 package com.sg.dvdlibrary.service;
 
-import com.sg.dvdlibrary.dao.DvdLibraryAuditDao;
-import com.sg.dvdlibrary.dao.DvdLibraryDao;
-import com.sg.dvdlibrary.dao.DvdLibraryPersistenceException;
+import com.sg.dvdlibrary.dao.*;
 import com.sg.dvdlibrary.dto.DVD;
 
 import java.util.List;
@@ -10,6 +8,7 @@ import java.util.List;
 public class DvdLibraryServiceLayerImp implements DvdLibraryServiceLayer {
 
     DvdLibraryDao dao;
+
     private DvdLibraryAuditDao auditDao;
 
     public DvdLibraryServiceLayerImp(DvdLibraryDao dao, DvdLibraryAuditDao auditDao) {
@@ -68,7 +67,7 @@ public class DvdLibraryServiceLayerImp implements DvdLibraryServiceLayer {
     public Boolean searchDvd(String title) throws
             DvdLibraryNoSuchTitleException,
             DvdLibraryPersistenceException {
-        if (dao.getDvd(title) == null) {
+        if (dao.searchDvd(title) == null) {
             editDvdCheck(title);
             return false;
         }
