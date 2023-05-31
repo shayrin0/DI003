@@ -15,5 +15,6 @@ public interface ClassVendingMachineDao {
     Product getProductByID(String id) throws ClassNotFoundException;
 
     Product checkProductExistInventory(String id) throws ClassVendingMachineInventoryException;
-    
+
+    Product addProduct(Product product);
 }

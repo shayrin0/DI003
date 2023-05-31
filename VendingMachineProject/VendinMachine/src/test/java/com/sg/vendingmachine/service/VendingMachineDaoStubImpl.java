@@ -26,6 +26,15 @@ public class VendingMachineDaoStubImpl implements ClassVendingMachineDao {
     }
 
     @Override
+    public Product addProduct(Product product) {
+        if (product.getId().equals(onlyProduct.getId())) {
+            return onlyProduct;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public Product sellItem(Product product) throws ClassVendingMachinePersistenceException {
         if (product.getId().equals(onlyProduct.getId())) {
             return onlyProduct;

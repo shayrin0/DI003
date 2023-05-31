@@ -28,6 +28,11 @@ public class ClassVendingMachineDaoImpl implements ClassVendingMachineDao{
         VENDING_MACHINE_FILE = "VendingMachineLibrary.txt";
    }
 
+    @Override
+    public Product addProduct(Product product) {
+        return product;
+    }
+
     public ClassVendingMachineDaoImpl(String productTextFile){
         this.listProducts = new HashMap<>();
         this.sc= new Scanner(System.in);
