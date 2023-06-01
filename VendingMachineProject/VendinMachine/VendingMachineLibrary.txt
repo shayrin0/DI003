@@ -1,8 +1,8 @@
 1::Gummies::1.10::0
-2::Bonbon::0.90::0
-3::Candies::1.23::4
+2::Bonbon::0.90::2
+3::Candies::1.23::3
 4::Chocolate Bars::0.85::11
-5::Fanta::2.22::6
+5::Fanta::2.22::5
 6::Water::0.99::3
 7::7Up::1.50::4
 8::Coca Cola::1.11::8
