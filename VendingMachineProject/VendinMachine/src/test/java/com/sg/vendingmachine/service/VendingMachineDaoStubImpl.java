@@ -45,7 +45,7 @@ public class VendingMachineDaoStubImpl implements ClassVendingMachineDao{
     }
 
     @Override
-    public Product checkProductExistInventory(String id) {
+    public Product checkProductExistInventory(String id)  throws ClassNoItemInventoryException {
         if (id.equals(onlyProduct.getId())) {
             return onlyProduct;
         } else {

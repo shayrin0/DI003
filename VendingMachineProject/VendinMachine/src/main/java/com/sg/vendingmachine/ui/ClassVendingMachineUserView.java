@@ -21,7 +21,9 @@ public class ClassVendingMachineUserView {
         this.getListItems(listItem);
     }
     public String getMenuOption() throws VendingMachineDaoException{
-        return io.readString("\nIf you wanna exit, please just press cero. \nType the ID of the product you wish purchase: ");
+        Integer msg = io.readInt("\nIf you wanna exit, please just press cero. \nType the ID of the product you wish purchase: ");
+        return msg.toString();
+//        return io.readString("\nIf you wanna exit, please just press cero. \nType the ID of the product you wish purchase: ");
     }
     
     private void getListItems(ArrayList<Product> listItem) throws VendingMachineDaoException{

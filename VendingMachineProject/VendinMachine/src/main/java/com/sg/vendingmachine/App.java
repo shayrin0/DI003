@@ -24,6 +24,5 @@ public class App {
         ClassVendingMachineServiceImpl myService = new ClassVendingMachineServiceImpl((ClassVendingMachineDaoImpl) myDao, myAuditDao);
         VendingMachineController controller = new VendingMachineController(myView, myService);
         controller.run();
-        
     }
 }
