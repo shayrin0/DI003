@@ -1,1 +1,7 @@
-2023-05-29T21:47:51.805531400 : 1
+31/41/2023 : Product Water:SOLD.
+01/19/2023 : Product Gummies:SOLD.
+01/26/2023 : Product Gummies:SOLD.
+01/00/2023 : Product Bonbon:SOLD.
+01/01/2023 : Product Bonbon:SOLD.
+01/01/2023 : Product Bonbon:SOLD.
+01/01/2023 : Product Bonbon:SOLD.

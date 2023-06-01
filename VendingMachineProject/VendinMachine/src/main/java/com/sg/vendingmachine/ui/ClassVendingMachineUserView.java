@@ -31,14 +31,23 @@ public class ClassVendingMachineUserView {
                 "Product",
                 "Price");
         io.print(head);
+        listItem.stream().filter((p) -> p.getNumberItemsInventory() > 0)
+                .forEach((p) -> System.out.printf("%10s | %20s | %20s%n", p.getId(), p.getName(), p.getPrice()));
+    }
+        /*io.print("\n*** Displaying Information of Products***");
+        String head = String.format("%10s | %20s | %20s" , 
+                "ID Product",
+                "Product",
+                "Price");
+        io.print(head);
         for(Product p: listItem){
             String dataProducts = String.format("%10s | %20s | %20s" , 
                 p.getId(),
                 p.getName(),
                 p.getPrice());
             io.print(dataProducts);
-        }        
-    }
+        } */       
+    
     public double getMoneyUser() throws VendingMachineDaoException{
        String output = "Please enter your amount of money: ";
        return io.readDouble(output);
@@ -51,8 +60,8 @@ public class ClassVendingMachineUserView {
         io.print("\nThank you for all, come back soon!!!");
     }
     
-    public void productSoldsuccefully() throws VendingMachineDaoException{
-        io.print("\nProduct sold succefully. Take your product.");
+    public void productSoldSuccessfully() throws VendingMachineDaoException{
+        io.print("\nProduct sold successfully. Take your product.");
     }
 
     public void displayErrorMessage(String message) throws VendingMachineDaoException {
@@ -71,9 +80,6 @@ public class ClassVendingMachineUserView {
                 + "\n" + "NICKELS: " + changeUser.get("NICKELS")
                 + "\n" + "PENNIES: " + changeUser.get("PENNIES")
                 );        
-        /*for(Map.Entry<String, Integer> change: changeUser.entrySet()){
-            output += "\n" + change.getKey() + ": " + change.getValue();
-        }*/
         io.print(output);
     }
 }

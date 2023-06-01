@@ -11,15 +11,11 @@ public class Product {
     private BigDecimal price;
     private int numberItemsInventory;
 
-    // added the default constructor
     public Product() {
-
     }
-
     public Product(String id) {
         this.id = id;
     }
-
     public Product(String id, String name, BigDecimal price, int numberItemsInventory) {
         this.id = id;
         this.name = name;

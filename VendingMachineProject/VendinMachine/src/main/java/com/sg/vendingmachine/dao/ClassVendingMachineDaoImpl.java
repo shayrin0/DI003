@@ -1,7 +1,9 @@
 
 package com.sg.vendingmachine.dao;
 
+import com.sg.vendingmachine.service.ClassVendingMachinePersistenceException;
 import com.sg.vendingmachine.dto.Product;
+import com.sg.vendingmachine.service.ClassNoItemInventoryException;
 import com.sg.vendingmachine.ui.UserIO;
 import com.sg.vendingmachine.ui.UserIOImplementation;
 import java.io.BufferedReader;
@@ -12,55 +14,41 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ClassVendingMachineDaoImpl implements ClassVendingMachineDao{
     
-    private final String VENDING_MACHINE_FILE;
+    public static String VENDING_MACHINE_FILE;
     public static final String DELIMITER = "::";    
-    private final Map<String, Product> listProducts;
-    private final UserIO io;
-    Scanner sc ;
+    private final Map<String, Product> listProducts = new HashMap<>();
+    private final UserIO io = new UserIOImplementation();    
     
     public ClassVendingMachineDaoImpl(){
-        this.listProducts = new HashMap<>();
-        this.sc= new Scanner(System.in);
-        this.io = new UserIOImplementation();
-        VENDING_MACHINE_FILE = "VendingMachineLibrary.txt";
-   }
-
-    @Override
-    public Product addProduct(Product product) {
-        return product;
+        this.VENDING_MACHINE_FILE = "VendingMachineLibrary.txt";
     }
-
-    public ClassVendingMachineDaoImpl(String productTextFile){
-        this.listProducts = new HashMap<>();
-        this.sc= new Scanner(System.in);
-        this.io = new UserIOImplementation();
-        VENDING_MACHINE_FILE = productTextFile;
+    
+    public ClassVendingMachineDaoImpl(String library){
+        this.VENDING_MACHINE_FILE = library;
     }
     
     @Override
     public Product sellItem(Product product) throws ClassVendingMachinePersistenceException{
-        this.loadRoster();        
+        this.loadLibrary();
         Product p = listProducts.get(product.getId());
-        p.setNumberItemsInventory((p.getNumberItemsInventory())-1);
-        this.writeRoster();
+        p.setNumberItemsInventory(p.getNumberItemsInventory()-1);
+        this.writeLibrary();
         return p;
     }
     
     @Override
     public ArrayList<Product> getListProducts() throws ClassVendingMachinePersistenceException {
-        loadRoster();
-        ArrayList<Product> listProductsInventory = new ArrayList<Product>();
-        Collection<Product> values = listProducts.values();
-        for(Product p: values){
-            if(p.getNumberItemsInventory()>0){
-                listProductsInventory.add(p);
-            }
-        }
-        return listProductsInventory;
-        //return new ArrayList<Product>(listProducts.values());        
+        loadLibrary();
+        //-listProducts.values() retrieves a Collection of all the Product objects stored in the listProducts map.
+        return listProducts.values().stream()
+                //-filters the stream, keeping only the Product objects where the numberItemsInventory is greater than 0.
+                .filter(p -> p.getNumberItemsInventory() >= 0)
+                //-collects the filtered Product objects into an ArrayList using the Collectors.toCollection method.
+                .collect(Collectors.toCollection(ArrayList::new));
     }
     
     private String marshallProduct(Product product){
@@ -85,7 +73,7 @@ public class ClassVendingMachineDaoImpl implements ClassVendingMachineDao{
         return productFromFile;
     }
     
-    private void loadRoster() throws ClassVendingMachinePersistenceException {
+    public void loadLibrary() throws ClassVendingMachinePersistenceException {
         Scanner scanner;
         try {
             scanner = new Scanner(
@@ -105,7 +93,7 @@ public class ClassVendingMachineDaoImpl implements ClassVendingMachineDao{
         scanner.close();
     }
     
-    private void writeRoster() throws ClassVendingMachinePersistenceException {
+    private void writeLibrary() throws ClassVendingMachinePersistenceException {
         PrintWriter out;
 
         try {
@@ -132,27 +120,33 @@ public class ClassVendingMachineDaoImpl implements ClassVendingMachineDao{
     public Product getProductByID(String id) throws ClassNotFoundException {        
         Product product ;
         try {
-            loadRoster();
+            loadLibrary();
             product = listProducts.get(id);
         } catch (ClassVendingMachinePersistenceException ex) {
             return null;
         }
         if(product == null){
-            return null;
-//            throw new ClassNotFoundException("The product with that ID doesn't exit.");
+            throw new ClassNotFoundException("The product with that ID doesn't exit.");
         }else{
             return product;
         }
     }
 
     @Override
-    // changed the return type
-    public Product checkProductExistInventory(String id) throws ClassVendingMachineInventoryException{
+    public Product checkProductExistInventory(String id) throws ClassNoItemInventoryException{
         Product myProduct = new Product();
         if(listProducts.get(id).getNumberItemsInventory()== 0){
-            throw new ClassVendingMachineInventoryException("");
+            throw new ClassNoItemInventoryException("");
         }
         return myProduct;
+        
     }
     
+    @Override
+    public Product addProduct(Product product) throws Exception {
+        listProducts.put(product.getId(), product);
+        writeLibrary();
+        return product;
+    }
+   
 }

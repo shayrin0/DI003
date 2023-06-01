@@ -1,10 +1,12 @@
 
 package com.sg.vendingmachine.dao;
 
+import com.sg.vendingmachine.service.ClassVendingMachinePersistenceException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ClassVendingMachineAuditDaoFileImpl implements ClassVendingMachineAuditDao {
    public static final String AUDIT_FILE = "audit.txt";
@@ -19,7 +21,8 @@ public class ClassVendingMachineAuditDaoFileImpl implements ClassVendingMachineA
         }
  
         LocalDateTime timestamp = LocalDateTime.now();
-        out.println(timestamp.toString() + " : " + entry);
+        String date = timestamp.format(DateTimeFormatter.ofPattern("dd/mm/yyyy"));
+        out.println(date + " : " + entry);
         out.flush();
     }
  

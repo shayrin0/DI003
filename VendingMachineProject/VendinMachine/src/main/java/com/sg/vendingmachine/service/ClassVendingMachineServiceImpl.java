@@ -2,11 +2,8 @@
 package com.sg.vendingmachine.service;
 
 import com.sg.vendingmachine.dao.ClassVendingMachineAuditDao;
-import com.sg.vendingmachine.dao.ClassVendingMachineChange;
-import com.sg.vendingmachine.dao.ClassVendingMachineChangeImpl;
+import com.sg.vendingmachine.dto.ClassVendingMachineChange;
 import com.sg.vendingmachine.dao.ClassVendingMachineDao;
-import com.sg.vendingmachine.dao.ClassVendingMachineInventoryException;
-import com.sg.vendingmachine.dao.ClassVendingMachinePersistenceException;
 import com.sg.vendingmachine.dto.Product;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -16,44 +13,47 @@ public class ClassVendingMachineServiceImpl implements ClassVendingMachineServic
     private final ClassVendingMachineDao dao;
     private final ClassVendingMachineAuditDao audit;
     private final ClassVendingMachineChange change;
+    private Map<String, Integer> changeUser;
 
     public ClassVendingMachineServiceImpl(ClassVendingMachineDao dao, ClassVendingMachineAuditDao audit) {
         this.dao = dao;
         this.audit = audit;
-        this.change = new ClassVendingMachineChangeImpl();
+        this.change = new ClassVendingMachineChange();
     }
 
     public ArrayList<Product> getListProducts() throws ClassVendingMachinePersistenceException {
         return dao.getListProducts();
     }
     
-    public void isMoneyUserValid(double money) throws ClassInsufficientFundsException{
-        if(money == 0){
+    public void isMoneyUserValid(BigDecimal money) throws ClassInsufficientFundsException{
+        if(money.compareTo(BigDecimal.ZERO) == 0){
             throw new ClassInsufficientFundsException("Insufficient Funds.");
         }
     }
 
     @Override
-    // changed the return type and added an if-else statement
-    public Product sellProduct(String id, BigDecimal moneyUser) throws ClassNoItemInventoryException, ClassInsufficientFundsException, ClassNotFoundException, ClassVendingMachineInventoryException {
+    public Product sellProduct(String id, BigDecimal moneyUser) throws ClassVendingMachinePersistenceException, ClassNoItemInventoryException, ClassInsufficientFundsException, ClassNotFoundException {
         Product prod;
         Product soldProduct;
-        Map<String, Integer> changeUser;
+        //Map<String, Integer> changeUser;
         try{
             prod = dao.getProductByID(id);
-            if (prod != null) {
-                isEnoughtMoneyUser(moneyUser, prod.getPrice());
+//            if (prod.getNumberItemsInventory() == 0)
+//                throw new ClassNoItemInventoryException("");
+            if (prod != null && prod.getNumberItemsInventory() != 0) {
+                isEnoughtMoneyUser(moneyUser, prod.getPrice());    
                 //Check if the product exist in the inventory
-                dao.checkProductExistInventory(id);
+                soldProduct = dao.checkProductExistInventory(id);   
                 //sell product
-                soldProduct = dao.sellItem(prod);
+                dao.sellItem(prod);
+                audit.writeAuditEntry(
+                "Product " + prod.getName() + ":SOLD.");
                 //get the change in pennies
                 int pennies = this.getChangeUserPennies(moneyUser, prod.getPrice());
-                change.getChangeUser(pennies);
-            }
-            else {
+                changeUser = change.getChangeUser(pennies);
+            } else{
                 return null;
-            }
+            }            
         }
         catch(ClassNotFoundException e){
             throw new ClassNotFoundException("The product with that ID doesn't exit.");
@@ -62,14 +62,18 @@ public class ClassVendingMachineServiceImpl implements ClassVendingMachineServic
             throw new ClassInsufficientFundsException("Insufficient Funds.");
         }
         catch(ClassVendingMachinePersistenceException e){
-            throw new ClassInsufficientFundsException("-_- Could not load the product data into memory.", e);
+            throw new ClassVendingMachinePersistenceException("-_- Could not load the product data into memory.", e);
         }
-        catch(ClassVendingMachineInventoryException e){
-            throw new ClassInsufficientFundsException("The product doesn't have any item in the inventory.");
-        }
+        catch(ClassNoItemInventoryException e){
+            throw new ClassNoItemInventoryException("The product doesn't have any item in the inventory.");
+        }        
         return soldProduct;
     }
-    
+
+    public Map<String, Integer> getChangeUser() {
+        return changeUser;
+    }
+
     private int getChangeUserPennies(BigDecimal moneyUser, BigDecimal price){
             //moneyUser - price
             moneyUser = moneyUser.subtract(price);            
@@ -77,7 +81,6 @@ public class ClassVendingMachineServiceImpl implements ClassVendingMachineServic
             double cents = moneyUser.doubleValue(); 
             return (int) (cents * 100);
     }
-
     private void isEnoughtMoneyUser(BigDecimal money, BigDecimal price) throws ClassInsufficientFundsException {
         /*0 : if value of this BigDecimal is equal to that of BigDecimal object passed as parameter.
           1 : if value of this BigDecimal is greater than that of BigDecimal object passed as parameter.
@@ -85,9 +88,6 @@ public class ClassVendingMachineServiceImpl implements ClassVendingMachineServic
         if(money.compareTo(price)== -1){
             throw new ClassInsufficientFundsException("");
         }
-    }
-
-    
-   
+    } 
     
 }
